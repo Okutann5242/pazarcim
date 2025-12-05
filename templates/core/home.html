@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-left">
+            <div class="hero-pill">Satıcılar için eğitim platformu</div>
+            <h1 class="hero-title">
+                Tek linkle satış yap,<br>
+                <span>eğitimle adım adım büyü.</span>
+            </h1>
+            <p class="hero-text">
+                Pazarcim; ürün listeleme, ödeme alma, kargo ve iade süreçlerini adım adım öğreten,
+                satıcı odaklı bir rehber ve pazar yeridir.
+            </p>
+            <div class="hero-actions">
+                <a href="{% url 'core:education_list' %}" class="btn btn-light">Satıcı eğitimlerini keşfet</a>
+                <a href="{% url 'core:dashboard' %}" class="btn btn-ghost">Satıcı panelini incele</a>
+            </div>
+            <p class="hero-note">
+                Eğitimle desteklenen Satıcı platformu ilk defa e ticaret yapacak kişiler için en uygunu 
+            </p>
+        </div>
+        <div class="hero-right">
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <p class="hero-stat-label">Satıcı eğitimleri</p>
+                    <p class="hero-stat-value">+15 modül</p>
+                </div>
+                <div class="hero-stat">
+                    <p class="hero-stat-label">Ödeme senaryoları</p>
+                    <p class="hero-stat-value">3 adımda</p>
+                </div>
+                <div class="hero-stat">
+                    <p class="hero-stat-label">Kargo &amp; iade</p>
+                    <p class="hero-stat-value">Hazır şablon</p>
+                </div>
+                <div class="hero-stat">
+                    <p class="hero-stat-label">Tek link mantığı</p>
+                    <p class="hero-stat-value">Kolay</p>
+                </div>
+            </div>
+            <div class="hero-side-note">
+                Bu sayfa, kullanıcıyı hem ürün tarafına hem de eğitim tarafına yönlendiren giriş noktasıdır.
+                 satıcı önce sistemi tanır sonra ürün eklemeye yönlendirilir.
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">Öne Çıkan Satıcı Eğitimleri</h2>
+    <div class="card-grid">
+        {% for course in featured_courses %}
+        <div class="card">
+            <div class="card-body">
+                <p class="card-title">{{ course.title }}</p>
+                <p class="card-meta">{{ course.level }} • {{ course.duration }}</p>
+            </div>
+            <div class="card-footer">
+                <span class="card-badge">Satıcılar için rehber</span>
+                <a href="{% url 'core:education_list' %}" class="card-link">Detayları incele</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="empty-text">Şu anda gösterilecek eğitim bulunamadı.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="section">
+    <h2 class="section-title">Popüler Ürünler</h2>
+
+    <div class="product-grid">
+        {% for item in popular_products %}
+        <article class="product-card">
+    <img src="{% static item.image %}" class="product-img" alt="{{ item.name }}">
+
+    <p class="product-name">{{ item.name }}</p>
+    <p class="product-price">{{ item.price }}</p>
+    <p class="product-badge">{{ item.badge }}</p>
+
+    <a href="{% url 'core:product_detail' forloop.counter %}" class="card-link" style="margin-top:8px;display:inline-block;">
+        İncele
+    </a>
+</article>
+
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

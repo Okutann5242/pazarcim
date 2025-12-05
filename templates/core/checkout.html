@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="page-section">
+    <div class="card">
+        <h2 class="page-title">Sipariş Özeti</h2>
+
+        <p><strong>Ürün:</strong> {{ product.name }}</p>
+        <p><strong>Fiyat:</strong> {{ product.price }}</p>
+
+        <a href="{% url 'core:payment' %}" class="btn btn-purple" style="margin-top:20px;">
+            Ödemeye Geç
+        </a>
+    </div>
+</div>
+{% endblock %}

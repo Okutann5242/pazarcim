@@ -1,0 +1,22 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Ödeme İadesi</h1>
+    <p class="panel-breadcrumb">İadeler &gt; Ödemeyi İade Et</p>
+</div>
+
+<div class="panel-card">
+    <div class="form-group">
+        <label>PZPazarcım Sipariş No</label>
+        <input type="text" class="form-control" placeholder="Sipariş numarasını girin">
+    </div>
+    <button class="btn btn-primary">Bul</button>
+
+    <p class="muted mt-16">
+        Ödeme iadesi yapmak istediğiniz işleme ulaşmak için önce sipariş numarasını girip
+        işleme ulaşın. Ardından açılan detaylardan ödemeyi iade edebilirsiniz.
+    </p>
+</div>
+
+{% endblock %}

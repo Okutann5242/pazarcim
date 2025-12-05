@@ -1,0 +1,50 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Dükkan Seçenekleri</h1>
+    <p class="panel-breadcrumb">Dükkan Yönetimi &gt; Dükkan Seçenekleri</p>
+</div>
+
+<div class="panel-grid-2">
+    <div class="panel-card">
+        <h2>Dükkanınızda Görüntülenen Bilgiler</h2>
+
+        <div class="form-group">
+            <label>Dükkan Adı (Link)</label>
+            <input type="text" class="form-control" placeholder="ornekdukkan">
+        </div>
+
+        <div class="form-group">
+            <label>Dükkan Adı</label>
+            <input type="text" class="form-control" placeholder="PZPazarcım Dükkanım">
+        </div>
+
+        <div class="form-group">
+            <label>Dükkan Sloganı</label>
+            <textarea class="form-control" rows="2" placeholder="Kısa sloganınız..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>E-posta Adresi</label>
+            <input type="email" class="form-control" placeholder="mail@ornek.com">
+        </div>
+
+        <div class="form-group">
+            <label>Telefon Numarası</label>
+            <input type="text" class="form-control" placeholder="(5xx) xxx xx xx">
+        </div>
+    </div>
+
+    <div class="panel-card">
+        <h2>Dükkan Bildirisi</h2>
+        <textarea class="form-control" rows="10" placeholder="Dükkan açıklamanız..."></textarea>
+    </div>
+</div>
+
+<div class="panel-card mt-24">
+    <h2>Hakkında Sayfası</h2>
+    <button class="btn btn-primary">Hakkında sayfasını düzenle</button>
+</div>
+
+{% endblock %}

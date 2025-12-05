@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <h2 class="auth-title">Giriş Yap</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if error %}
+                <p style="color:red; font-size:0.9rem;">{{ error }}</p>
+            {% endif %}
+
+            <label>E-posta</label>
+            <input type="email" name="email" class="auth-input">
+
+            <label>Şifre</label>
+            <input type="password" name="password" class="auth-input">
+
+            <button class="auth-button">Giriş Yap</button>
+
+            <p class="auth-small">
+                Hesabın yok mu?
+                <a href="{% url 'accounts:register' %}">Kayıt Ol</a>
+            </p>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

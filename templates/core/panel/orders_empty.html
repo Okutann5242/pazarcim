@@ -1,0 +1,20 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Siparişler</h1>
+</div>
+
+<div class="empty-state">
+    <div class="empty-icon">🌱</div>
+    <h2>İlk siparişinizi bekliyoruz!</h2>
+    <p class="muted">
+        Henüz bir siparişiniz yok ama olur olmaz burada göstermeye başlayacağız.
+        Şimdi ürünlerinizi listeleyerek mağazanızı satışa hazır hale getirebilirsiniz.
+    </p>
+    <a href="{% url 'core:panel_products_new' %}" class="btn btn-primary">
+        Hemen ürün listele
+    </a>
+</div>
+
+{% endblock %}

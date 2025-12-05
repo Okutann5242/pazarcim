@@ -1,0 +1,45 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Hesap Güvenliği</h1>
+    <p class="panel-breadcrumb">Hesap Yönetimi &gt; Hesap Güvenliği</p>
+</div>
+
+<div class="panel-grid-2">
+    <div class="panel-card">
+        <h2>Şifre Değiştirme</h2>
+
+        <div class="form-group">
+            <label>Mevcut Şifrenizi Giriniz</label>
+            <input type="password" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>Yeni Şifrenizi Giriniz</label>
+            <input type="password" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label>Yeni Şifrenizi Giriniz (Tekrar)</label>
+            <input type="password" class="form-control">
+        </div>
+
+        <button class="btn btn-primary">Şifre Değiştir</button>
+    </div>
+
+    <div class="panel-card">
+        <h2>İki Adımlı Doğrulama</h2>
+
+        <div class="radio-group">
+            <label><input type="radio"> Açık</label>
+            <label><input type="radio" checked> Kapalı</label>
+        </div>
+
+        <p class="muted mt-16">
+            Bu bölüm tamamen örnek amaçlıdır. Gerçek bir doğrulama sistemi içermez, sadece arayüz prototipidir.
+        </p>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>PZPazarcım Satıcı Paneli</title>
+    <link rel="stylesheet" href="{% static 'css/panel.css' %}">
+</head>
+
+<body>
+
+<div class="panel-layout">
+
+    {% include "core/panel/sidebar.html" %}
+
+    <main class="panel-content">
+        {% block content %}{% endblock %}
+    </main>
+
+</div>
+
+<script>
+    function toggleMenu(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.style.display = (el.style.display === "block") ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Tahsilatlar</h1>
+    <p class="panel-breadcrumb">Tahsilatlar &gt; Tahsilat Detayları</p>
+</div>
+
+<div class="panel-grid-3">
+    <div class="panel-card">
+        <h2>Toplam Bakiye</h2>
+        <p class="big-value">0,00 TL</p>
+    </div>
+    <div class="panel-card">
+        <h2>Kesintiler</h2>
+        <p class="big-value">-</p>
+    </div>
+    <div class="panel-card">
+        <h2>Net Bakiye</h2>
+        <p class="big-value">0,00 TL</p>
+    </div>
+</div>
+
+<div class="panel-card mt-24">
+    <div class="tab-header">
+        <button class="tab active">Bakiye Detayları</button>
+        <button class="tab">Kesinti Detayları</button>
+        <button class="tab">Para Gönderimleri</button>
+        <button class="tab">Tahsilat Kuralları</button>
+    </div>
+
+    <table class="panel-table">
+        <thead>
+        <tr>
+            <th>Sipariş No</th>
+            <th>Sipariş Tarihi</th>
+            <th>Müşteri</th>
+            <th>Sipariş Tutarı</th>
+            <th>Tahsilat Tutarı</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="5" class="muted text-center">
+                Burada henüz veri yok :(
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

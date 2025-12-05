@@ -1,0 +1,430 @@
+/* ========================================================================== */
+/*                            GLOBAL & RESET                                   */
+/* ========================================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.main-wrapper {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 3rem;
+}
+
+/* ========================================================================== */
+/*                                  NAVBAR                                     */
+/* ========================================================================== */
+
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+}
+
+.navbar-inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0.75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.brand-logo {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #7c3aed;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.brand-text {
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #4b5563;
+}
+
+.nav-links a:hover {
+    color: #7c3aed;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: 0.15s ease;
+}
+
+.btn-outline {
+    border-color: #e5e7eb;
+    background-color: #ffffff;
+    color: #111827;
+}
+.btn-outline:hover {
+    background-color: #f3f4f6;
+}
+
+.btn-primary {
+    background-color: #7c3aed;
+    color: #ffffff;
+}
+.btn-primary:hover {
+    background-color: #6d28d9;
+}
+
+.btn-light {
+    background-color: #ffffff;
+    color: #7c3aed;
+}
+.btn-light:hover {
+    background-color: #f9fafb;
+}
+
+/* ========================================================================== */
+/*                                   HERO                                      */
+/* ========================================================================== */
+
+.hero {
+    border-radius: 1.5rem;
+    padding: 2.5rem;
+    background-image: radial-gradient(circle at top right, rgba(255,255,255,0.08), transparent 55%),
+                      radial-gradient(circle at bottom, rgba(255,255,255,0.07), transparent 55%),
+                      linear-gradient(135deg, #4c1d95, #7c3aed);
+    color: #ffffff;
+}
+
+.hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.hero-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.35);
+    background-color: rgba(17,24,39,0.1);
+    font-size: 0.68rem;
+}
+
+.hero-title {
+    margin-top: 1.1rem;
+    font-size: 2rem;
+    line-height: 1.25;
+    font-weight: 600;
+}
+
+.hero-title span {
+    color: #e9d5ff;
+}
+
+.hero-text {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: rgba(249,250,251,0.9);
+    max-width: 30rem;
+}
+
+.hero-actions {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.hero-note {
+    margin-top: 0.75rem;
+    font-size: 0.7rem;
+    color: rgba(249,250,251,0.85);
+}
+
+.hero-right {
+    backdrop-filter: blur(12px);
+    background-color: rgba(17,24,39,0.25);
+    border-radius: 1.25rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.18);
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    font-size: 0.8rem;
+}
+
+.hero-stat-label {
+    color: rgba(249,250,251,0.75);
+}
+
+.hero-stat-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* ========================================================================== */
+/*                            ÖNE ÇIKAN EĞİTİMLER                              */
+/* ========================================================================== */
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1.25rem;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    border: 1px solid #e5e7eb;
+    padding: 1rem;
+    box-shadow: 0 8px 18px rgba(15,23,42,0.03);
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.card-meta {
+    margin-top: 0.25rem;
+    font-size: 0.78rem;
+    color: #6b7280;
+}
+
+.card-footer {
+    margin-top: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+}
+
+.card-badge {
+    color: #7c3aed;
+    font-weight: 600;
+}
+
+/* ========================================================================== */
+/*                                POPÜLER ÜRÜNLER                              */
+/* ========================================================================== */
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin-top: 20px;
+}
+
+.product-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 18px;
+    border: 1px solid #ececec;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.04);
+    transition: 0.2s ease;
+    min-height: 250px;
+}
+
+.product-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.product-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    background: #f7f7f7;
+}
+
+.product-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.product-price {
+    color: #7c3aed;
+    font-weight: 700;
+    margin-top: 4px;
+}
+
+.product-badge {
+    font-size: 0.78rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* ========================================================================== */
+/*                             LOGIN & REGISTER                                */
+/* ========================================================================== */
+
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    border: 1px solid #e6e6e6;
+}
+
+.auth-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.auth-input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    margin-top: 6px;
+    font-size: 0.95rem;
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 2px rgba(124,58,237,0.25);
+}
+
+.auth-button {
+    width: 100%;
+    background: #7c3aed;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.auth-button:hover {
+    background: #6d28d9;
+}
+
+.auth-small {
+    margin-top: 14px;
+    font-size: 0.87rem;
+    text-align: center;
+}
+
+.auth-small a {
+    color: #7c3aed;
+    font-weight: 600;
+}
+
+/* ========================================================================== */
+/*                                  FOOTER                                     */
+/* ========================================================================== */
+
+.footer {
+    margin-top: 3rem;
+    border-top: 1px solid #e5e7eb;
+    background-color: #ffffff;
+}
+
+.footer-inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.footer-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: #6b7280;
+}
+.footer-links a:hover {
+    color: #7c3aed;
+}
+
+/* ========================================================================== */
+/*                                RESPONSIVE                                   */
+/* ========================================================================== */
+
+@media (max-width: 900px) {
+    .nav-links { display: none; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .hero { padding: 1.5rem; }
+    .hero-inner { grid-template-columns: 1fr; }
+}

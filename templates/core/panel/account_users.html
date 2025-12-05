@@ -1,0 +1,70 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Kullanıcı Hesapları</h1>
+    <p class="panel-breadcrumb">Hesap Yönetimi &gt; Kullanıcı Hesapları</p>
+</div>
+
+<div class="panel-card">
+    <h2>Kullanıcı Oluştur</h2>
+
+    <div class="panel-grid-2">
+        <div class="form-group">
+            <label>Adı</label>
+            <input type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Soyadı</label>
+            <input type="text" class="form-control">
+        </div>
+    </div>
+
+    <div class="panel-grid-2">
+        <div class="form-group">
+            <label>E-posta Adresi</label>
+            <input type="email" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Cep Telefonu Numarası</label>
+            <input type="text" class="form-control" placeholder="(5xx) xxx xx xx">
+        </div>
+    </div>
+
+    <h3>Yetki Alanları</h3>
+    <div class="checkbox-group">
+        <label><input type="checkbox"> Operasyonel izin</label>
+        <label><input type="checkbox"> Finansal izin</label>
+        <label><input type="checkbox"> Teknik izin</label>
+        <label><input type="checkbox"> İade izni</label>
+    </div>
+
+    <button class="btn btn-primary mt-16">Kullanıcı Oluştur</button>
+</div>
+
+<div class="panel-card mt-24">
+    <h2>Mevcut Kullanıcılar</h2>
+
+    <table class="panel-table">
+        <thead>
+        <tr>
+            <th>Adı Soyadı</th>
+            <th>E-posta Adresi</th>
+            <th>Cep Telefonu</th>
+            <th>Oluşturulma Tarihi</th>
+            <th>Durum</th>
+            <th>Yetkiler</th>
+            <th>Kullanıcı Silme</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td colspan="7" class="text-center muted">
+                Burada henüz veri yok :(
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

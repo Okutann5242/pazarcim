@@ -1,0 +1,25 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Kategori Ayarları</h1>
+    <p class="panel-breadcrumb">Dükkan Yönetimi &gt; Kategori Ayarları</p>
+</div>
+
+<div class="panel-card">
+    <h2>Kategori Ekleme</h2>
+    <p class="muted">
+        Dükkanınızda satışa sunduğunuz ürün veya hizmetleri kategorilendirmek için
+        burada kategoriler tanımlayabilirsiniz.
+    </p>
+
+    <div class="form-inline">
+        <div class="form-group flex-1">
+            <label>Kategori Adı</label>
+            <input type="text" class="form-control" placeholder="Örneğin: Telefon Aksesuarları">
+        </div>
+        <button class="btn btn-primary mt-24">Ekle</button>
+    </div>
+</div>
+
+{% endblock %}
