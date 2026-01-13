@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Adres Sil{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header"><h1>Adres Sil</h1></div>
+  <div class="card"><div class="card-body">
+    <p><strong>{{ address.full_name }}</strong> adresi silinsin mi?</p>
+    <form method="post">
+      {% csrf_token %}
+      <a class="btn btn-outline" href="{% url 'checkout:addresses' %}">Vazgeç</a>
+      <button class="btn btn-primary" type="submit">Sil</button>
+    </form>
+  </div></div>
+</div>
+{% endblock %}

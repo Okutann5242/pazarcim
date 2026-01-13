@@ -1,0 +1,37 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Tahsilatlar</h1>
+    <p class="panel-breadcrumb">Tahsilatlar</p>
+</div>
+
+<div class="panel-card">
+  <h2>Para Gönderimleri</h2>
+
+  {% if payouts %}
+    <div class="table">
+      <div class="table-row table-head">
+        <div>Referans</div>
+        <div>Tutar</div>
+        <div>Tarih</div>
+        <div>Not</div>
+      </div>
+      {% for p in payouts %}
+        <div class="table-row">
+          <div>{{ p.reference }}</div>
+          <div>₺{{ p.amount }}</div>
+          <div>{{ p.created_at|date:"d.m.Y H:i" }}</div>
+          <div>{{ p.note|default:"-" }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-state">
+      <h2>Henüz tahsilat kaydı yok</h2>
+      <p class="muted">Siparişlerden sonra tahsilat kayıtları burada tutulabilir.</p>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

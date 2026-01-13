@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Profil{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1>Hesabım</h1>
+    <p>Hesap bilgileri, adresler, siparişler ve eğitim kütüphanesi.</p>
+  </div>
+
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+    <div class="card"><div class="card-body">
+      <h3 style="margin:0 0 8px 0;">Profil</h3>
+      <p style="margin:0 0 12px 0; opacity:.85;">{{ request.user.get_username }}{% if request.user.email %} • {{ request.user.email }}{% endif %}</p>
+      <a class="btn btn-outline" href="{% url 'accounts:logout' %}">Çıkış Yap</a>
+    </div></div>
+
+    <div class="card"><div class="card-body">
+      <h3 style="margin:0 0 8px 0;">Siparişlerim</h3>
+      <p style="margin:0 0 12px 0; opacity:.85;">Geçmiş siparişlerinizi görüntüleyin.</p>
+      <a class="btn btn-primary" href="{% url 'checkout:my_orders' %}">Siparişler</a>
+    </div></div>
+
+    <div class="card"><div class="card-body">
+      <h3 style="margin:0 0 8px 0;">Adresler</h3>
+      <p style="margin:0 0 12px 0; opacity:.85;">Checkout için kayıtlı adreslerinizi yönetin.</p>
+      <a class="btn btn-primary" href="{% url 'checkout:addresses' %}">Adreslerim</a>
+    </div></div>
+
+    <div class="card"><div class="card-body">
+      <h3 style="margin:0 0 8px 0;">Eğitim Kütüphanesi</h3>
+      <p style="margin:0 0 12px 0; opacity:.85;">PDF eğitimlere erişin.</p>
+      <a class="btn btn-primary" href="{% url 'education:training_list' %}">Eğitimler</a>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

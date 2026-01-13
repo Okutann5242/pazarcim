@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-container">
+    <h1 class="page-title">Siparişiniz Alındı</h1>
+    <p class="page-text">Sipariş numarası: <strong>#{{ order.id }}</strong></p>
+
+    <div class="card">
+        {% for item in order.items.all %}
+            <div class="summary-row">
+                <span>{{ item.product.name }} x{{ item.quantity }}</span>
+                <span>₺{{ item.line_total }}</span>
+            </div>
+        {% endfor %}
+        <hr />
+        <div class="summary-row">
+            <strong>Toplam</strong>
+            <strong>₺{{ order.total_amount }}</strong>
+        </div>
+    </div>
+
+    <div class="card-actions">
+        <a href="{% url 'checkout:my_orders' %}" class="btn btn-primary">Siparişlerim</a>
+        <a href="{% url 'products:list' %}" class="btn btn-outline">Ürünlere Dön</a>
+    </div>
+</div>
+
+{% endblock %}

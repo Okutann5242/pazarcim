@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Siparişlerim</h1>
+        <a href="{% url 'products:list' %}" class="btn btn-outline">Ürünlere Git</a>
+    </div>
+
+    {% for order in orders %}
+        <div class="card">
+            <div class="summary-row">
+                <strong>#{{ order.id }}</strong>
+                <span>{{ order.get_status_display }}</span>
+                <span>₺{{ order.total_amount }}</span>
+            </div>
+            <div class="muted" style="margin-top: 6px;">{{ order.created_at }}</div>
+            <div style="margin-top: 12px;">
+                {% for item in order.items.all %}
+                    <div class="summary-row">
+                        <span>{{ item.product.name }} x{{ item.quantity }}</span>
+                        <span>₺{{ item.line_total }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% empty %}
+        <div class="empty-state">
+            <p>Henüz siparişiniz yok.</p>
+            <a href="{% url 'products:list' %}" class="btn btn-primary">Alışverişe Başla</a>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

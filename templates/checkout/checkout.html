@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Teslimat & Ödeme</h1>
+        <a href="{% url 'checkout:cart' %}" class="btn btn-outline">Sepete Dön</a>
+    </div>
+
+    <div class="two-col">
+        <div>
+            <h3>Adres Seç</h3>
+            {% if addresses %}
+                <form method="post" class="card">
+                    {% csrf_token %}
+                    <p class="muted">Kayıtlı bir adres seçebilirsiniz:</p>
+                    <div class="radio-list">
+                        {% for a in addresses %}
+                            <label class="radio">
+                                <input type="radio" name="use_address_id" value="{{ a.id }}" {% if forloop.first %}checked{% endif %} />
+                                <span>{{ a.full_name }} — {{ a.city }}/{{ a.district }} ({{ a.line1 }})</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    <button class="btn btn-primary" type="submit">Devam Et</button>
+                </form>
+                <div class="spacer"></div>
+                <h3>veya Yeni Adres Ekle</h3>
+            {% endif %}
+
+            <form method="post" class="card">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div class="form-grid">
+                    <label>Ad Soyad {{ form.full_name }}</label>
+                    <label>Telefon {{ form.phone }}</label>
+                    <label>Adres Satırı 1 {{ form.line1 }}</label>
+                    <label>Adres Satırı 2 {{ form.line2 }}</label>
+                    <label>İl {{ form.city }}</label>
+                    <label>İlçe {{ form.district }}</label>
+                    <label>Posta Kodu {{ form.postal_code }}</label>
+                </div>
+                
+                <hr />
+                <h3>Kargo</h3>
+                <div class="form-grid">
+                    {% for sm in shipping_methods %}
+                        <label class="radio-row">
+                            <input type="radio" name="shipping_method_id" value="{{ sm.id }}" {% if forloop.first %}checked{% endif %}/>
+                            <span>{{ sm.name }} (₺{{ sm.flat_fee }})</span>
+                        </label>
+                    {% empty %}
+                        <p class="muted">Aktif kargo yöntemi yok.</p>
+                    {% endfor %}
+                </div>
+
+                <h3>İndirim Kodu</h3>
+                <div class="form-grid">
+                    <label>Kod {{ extras_form.discount_code }}</label>
+                </div>
+<button class="btn btn-primary" type="submit">Siparişi Oluştur</button>
+            </form>
+        </div>
+
+        <div>
+            <h3>Sipariş Özeti</h3>
+            <div class="card">
+                {% for item in cart.items.all %}
+                    <div class="summary-row">
+                        <span>{{ item.product.name }} x{{ item.quantity }}</span>
+                        <span>₺{{ item.line_total }}</span>
+                    </div>
+                {% endfor %}
+                <hr />
+                <div class="summary-row">
+                    <strong>Toplam</strong>
+                    <strong>₺{{ cart.total_amount }}</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

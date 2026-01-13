@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="section">
+    <h1 class="section-title">Yardım Merkezi / Sıkça Sorulan Sorular</h1>
+    <p class="page-text">
+        Bu alan, projeyi inceleyen kişi için Pazarcim prototipinin kapsamını ve senaryosunu
+        açıklayan örnek soruları içerir.
+    </p>
+
+    <div class="faq-list">
+        {% for item in faq_items %}
+        <div class="faq-item">
+            <p class="faq-question">{{ item.question }}</p>
+            <p class="faq-answer">{{ item.answer }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

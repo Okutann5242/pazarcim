@@ -1,0 +1,186 @@
+{% extends "core/panel/panel_base.html" %}
+
+{% block content %}
+
+<style>
+    /* Form Genişlik Sınırlaması */
+    .form-container {
+        max-width: 800px; /* Form çok yayılmasın */
+        margin: 0 auto;
+    }
+
+    /* Kart Tasarımı */
+    .panel-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    /* 2 Sütunlu Izgara (Grid) Yapısı */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* İki eşit kolon */
+        gap: 24px;
+    }
+
+    /* Tam genişlik kaplaması gereken alanlar için */
+    .full-width {
+        grid-column: span 2;
+    }
+
+    /* Input ve Label Stilleri */
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+
+    /* Django'nun render ettiği inputlara stil giydirme */
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="email"],
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+        background-color: #f9fafb; /* Hafif gri zemin */
+        transition: all 0.2s;
+        box-sizing: border-box; /* Padding taşmasını önler */
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #4f46e5;
+        background-color: #fff;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    /* Textarea özel ayarı */
+    .form-group textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    /* Alt Buton Alanı */
+    .panel-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .btn {
+        padding: 10px 24px;
+        border-radius: 6px;
+        font-weight: 500;
+        text-decoration: none;
+        font-size: 14px;
+        border: none;
+        cursor: pointer;
+    }
+    .btn-primary { background-color: #4f46e5; color: white; }
+    .btn-primary:hover { background-color: #4338ca; }
+    .btn-outline { background-color: white; border: 1px solid #d1d5db; color: #374151; }
+    .btn-outline:hover { background-color: #f3f4f6; }
+
+    /* Hata Mesajları */
+    .error-box {
+        background-color: #fee2e2;
+        border: 1px solid #fecaca;
+        color: #b91c1c;
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    .field-error {
+        color: #dc2626;
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+    }
+    .help-text {
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 4px;
+        display: block;
+    }
+</style>
+
+<div class="panel-header">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h1>İade Talebi Oluştur</h1>
+            <p class="panel-breadcrumb">İadeler &gt; Yeni Kayıt</p>
+        </div>
+    </div>
+</div>
+
+<div class="form-container">
+    <form method="post">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="error-box">
+                <strong>Hata:</strong> {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="panel-card">
+            
+            <div class="form-grid">
+                
+                <div class="form-group">
+                    <label>Sipariş Numarası / ID <span style="color:red">*</span></label>
+                    {{ form.order_id }}
+                    {% if form.order_id.errors %}
+                        <span class="field-error">{{ form.order_id.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label>Müşteri E-posta (Opsiyonel)</label>
+                    {{ form.customer_email }}
+                    {% if form.customer_email.errors %}
+                        <span class="field-error">{{ form.customer_email.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group full-width">
+                    <label>İade Gerekçesi</label>
+                    {{ form.reason }}
+                    <span class="help-text">Müşterinin belirttiği iade nedenini detaylıca yazın.</span>
+                    {% if form.reason.errors %}
+                        <span class="field-error">{{ form.reason.errors.0 }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Başlangıç Durumu</label>
+                    {{ form.status }}
+                    <span class="help-text">Talebin işleme alınacağı ilk durum.</span>
+                </div>
+
+            </div>
+
+            <div class="panel-actions">
+                <a class="btn btn-outline" href="{% url 'core:panel_refunds' %}">İptal</a>
+                <button class="btn btn-primary" type="submit">Talebi Kaydet</button>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+{% endblock %}

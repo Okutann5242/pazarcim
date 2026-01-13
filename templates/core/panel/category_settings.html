@@ -1,0 +1,53 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Kategoriler</h1>
+    <p class="panel-breadcrumb">Dükkan Yönetimi &gt; Kategoriler</p>
+</div>
+
+<div class="panel-card">
+    <h2>Yeni Kategori</h2>
+    <p class="muted">Katalog için kategori ekleyin.</p>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="panel-grid-2">
+        <div class="form-group">
+          <label>Kategori Adı</label>
+          <input type="text" name="name" class="input" placeholder="Örneğin: Telefon Aksesuarları" required>
+        </div>
+        <div class="form-group">
+          <label>Slug (opsiyonel)</label>
+          <input type="text" name="slug" class="input" placeholder="telefon-aksesuarlari">
+        </div>
+      </div>
+      <div class="panel-actions">
+        <button class="btn btn-primary" type="submit">Ekle</button>
+      </div>
+    </form>
+</div>
+
+{% if categories %}
+  <div class="panel-card">
+    <h2>Mevcut Kategoriler</h2>
+    <div class="table">
+      <div class="table-row table-head">
+        <div>Ad</div>
+        <div>Slug</div>
+        <div>İşlem</div>
+      </div>
+      {% for c in categories %}
+        <div class="table-row">
+          <div>{{ c.name }}</div>
+          <div>{{ c.slug }}</div>
+          <div>
+            <a class="btn btn-outline" href="{% url 'core:panel_category_delete' c.id %}">Sil</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+<div class="panel-header"><h1>Sil</h1><p class="panel-breadcrumb">Varyasyon Seçeneği &gt; Sil</p></div>
+<div class="panel-card">
+  <p><strong>{{ obj }}</strong> silinsin mi?</p>
+  <form method="post">{% csrf_token %}
+    <div class="panel-actions">
+      <a class="btn btn-outline" href="{% url 'core:panel_variation_settings' %}">Vazgeç</a>
+      <button class="btn btn-primary" type="submit">Sil</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

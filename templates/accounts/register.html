@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h2 class="auth-title">Kayıt Ol</h2>
+
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <label>Kullanıcı Adı</label>
+      {{ form.username }}
+      {{ form.username.errors }}
+
+      <label>E-posta</label>
+      {{ form.email }}
+      {{ form.email.errors }}
+
+      <label>Hesap Tipi</label>
+      <div class="auth-radio-group">
+        {{ form.role }}
+      </div>
+      {{ form.role.errors }}
+
+      <div id="store-field-row">
+        <label>Dükkan Adı</label>
+        {{ form.store_name }}
+        {{ form.store_name.errors }}
+      </div>
+
+      <label>Telefon (opsiyonel)</label>
+      {{ form.phone }}
+      {{ form.phone.errors }}
+
+      <label>Şifre</label>
+      {{ form.password1 }}
+      {{ form.password1.errors }}
+
+      <label>Şifre Tekrar</label>
+      {{ form.password2 }}
+      {{ form.password2.errors }}
+
+      <button class="auth-button" type="submit">Hesap Oluştur</button>
+
+      <p class="auth-small">
+        Zaten hesabın var mı?
+        <a href="{% url 'accounts:login' %}">Giriş Yap</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  const buyer = document.querySelector('input[name="role"][value="buyer"]');
+  const seller = document.querySelector('input[name="role"][value="seller"]');
+  const storeRow = document.getElementById("store-field-row");
+
+  function refresh() {
+    if (!storeRow) return;
+    const show = seller && seller.checked;
+    storeRow.style.display = show ? "block" : "none";
+  }
+
+  if (buyer) buyer.addEventListener("change", refresh);
+  if (seller) seller.addEventListener("change", refresh);
+  refresh();
+})();
+</script>
+
+{% endblock %}

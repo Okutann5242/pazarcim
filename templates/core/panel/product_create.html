@@ -1,0 +1,291 @@
+{% extends "core/panel/panel_base.html" %}
+{% load dict_extras %}
+
+{% block content %}
+
+<style>
+    /* 1. Genel Form Düzeni */
+    .form-container {
+        max-width: 1000px; /* Çok geniş ekranlarda yayılmasın */
+        margin: 0 auto;
+    }
+
+    .panel-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    /* 2. Grid Yapısı (İki kolonlu form) */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Yarı yarıya böl */
+        gap: 24px;
+    }
+
+    .full-width {
+        grid-column: span 2; /* Tüm satırı kapla */
+    }
+
+    /* 3. Input ve Label Stilleri */
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group select,
+    .form-group textarea,
+    .form-group input[type="file"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.2s;
+        box-sizing: border-box; /* Padding taşmasın */
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        border-color: #4f46e5;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .required { color: #dc2626; }
+    .muted { font-size: 12px; color: #6b7280; display: block; margin-top: 4px; }
+    .error-list { color: #dc2626; font-size: 13px; margin-top: 5px; list-style: none; padding: 0; }
+
+    /* 4. Varyasyon Alanı Özelleştirmesi */
+    .variation-card {
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+    
+    .variation-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .variation-options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 12px;
+    }
+
+    .variation-option-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        padding: 8px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+    }
+
+    .variation-option-row:hover {
+        border-color: #cbd5e1;
+    }
+
+    .price-input-sm {
+        width: 100px !important;
+        padding: 6px !important;
+        font-size: 13px !important;
+        text-align: right;
+    }
+
+    /* 5. Alt Aksiyon Barı */
+    .panel-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .btn {
+        padding: 10px 24px;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        text-decoration: none;
+        font-size: 14px;
+        border: none;
+    }
+    .btn-primary { background-color: #4f46e5; color: white; }
+    .btn-primary:hover { background-color: #4338ca; }
+    .btn-outline { background-color: white; border: 1px solid #d1d5db; color: #374151; }
+    .btn-outline:hover { background-color: #f3f4f6; }
+
+</style>
+
+<div class="panel-header">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+            <h1 style="font-size:24px; font-weight:700; color:#111827;">{% if mode == "edit" %}Ürünü Düzenle{% else %}Yeni Ürün Ekle{% endif %}</h1>
+            <p style="color:#6b7280; font-size:14px;">Ürünlerinizi mağazanızda listelemek için bilgileri doldurun.</p>
+        </div>
+        <button class="btn btn-primary" onclick="document.getElementById('productForm').submit()">Kaydet</button>
+    </div>
+</div>
+
+<div class="form-container">
+    <form method="post" enctype="multipart/form-data" id="productForm">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div style="background:#fee2e2; color:#b91c1c; padding:12px; border-radius:6px; margin-bottom:20px;">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="panel-card">
+            <h2 class="card-title">📦 Ürün Bilgileri</h2>
+            
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label>Ürün Adı <span class="required">*</span></label>
+                    {{ form.name }}
+                    {{ form.name.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label>Kategori</label>
+                    {{ form.category }}
+                </div>
+                <div class="form-group">
+                    <label>Slug (URL) <span class="required">*</span></label>
+                    {{ form.slug }}
+                    <small class="muted">Otomatik oluşur, gerekirse düzenleyin.</small>
+                    {{ form.slug.errors }}
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Kısa Açıklama (Özet)</label>
+                    {{ form.short_description }}
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Detaylı Açıklama</label>
+                    {{ form.description }}
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-card">
+            <h2 class="card-title">💰 Fiyat ve Stok Yönetimi</h2>
+            <div class="form-grid">
+                
+                <div class="form-group">
+                    <label>Satış Fiyatı (TL) <span class="required">*</span></label>
+                    {{ form.price }}
+                    {{ form.price.errors }}
+                </div>
+
+                <div class="form-group">
+                    <label>İndirimsiz/Eski Fiyat (Opsiyonel)</label>
+                    {{ form.compare_at_price }}
+                    <small class="muted">Üstü çizili fiyat olarak görünür.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Stok Adedi</label>
+                    {{ form.stock }}
+                </div>
+
+                <div class="form-group">
+                    <label>SKU (Stok Kodu)</label>
+                    {{ form.sku }}
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-card">
+            <h2 class="card-title">🖼️ Medya ve Durum</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label>Ürün Görseli</label>
+                    {{ form.image }}
+                </div>
+                
+                <div class="form-group">
+                    <label>Yayın Durumu</label>
+                    <div style="display:flex; align-items:center; gap:10px; margin-top:10px;">
+                        {{ form.is_active }}
+                        <span>Satışa Açık (Aktif)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-card">
+            <h2 class="card-title">🎨 Varyasyon Seçenekleri</h2>
+            <p style="color:#6b7280; font-size:14px; margin-bottom:20px;">
+                Ürüne ait renk, beden gibi seçenekleri aşağıdan işaretleyin. Ek ücret varsa yanına yazın.
+            </p>
+
+            {% if variation_types %}
+                {% for vt in variation_types %}
+                    <div class="variation-card">
+                        <div class="variation-header">
+                            <input type="checkbox" id="vt_{{vt.id}}" name="variation_type_ids" value="{{ vt.id }}" {% if vt.id in selected_type_ids %}checked{% endif %} style="width:auto;">
+                            <label for="vt_{{vt.id}}" style="font-weight:700; font-size:15px; margin:0; cursor:pointer;">{{ vt.name }}</label>
+                        </div>
+
+                        <div class="variation-options-grid">
+                            {% for opt in vt.options.all %}
+                                <div class="variation-option-row">
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <input type="checkbox" id="opt_{{opt.id}}" name="variation_option_ids" value="{{ opt.id }}" {% if selected_option_map|dict_get:opt.id %}checked{% endif %} style="width:auto;">
+                                        <label for="opt_{{opt.id}}" style="margin:0; font-size:14px; cursor:pointer;">{{ opt.name }}</label>
+                                    </div>
+                                    <div>
+                                        <input class="price-input-sm" type="number" step="0.01" name="extra_price_{{ opt.id }}" value="{{ selected_option_map|dict_get:opt.id|default:'' }}" placeholder="+₺ Fiyat">
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div style="text-align:center; padding:20px; background:#f9fafb; border-radius:8px;">
+                    <p class="muted">Henüz hiç varyasyon tipi tanımlanmamış.</p>
+                    <a href="{% url 'core:panel_variation_settings' %}" style="color:#4f46e5; text-decoration:none; font-size:14px;">Varyasyon Ayarlarına Git &rarr;</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="panel-actions">
+            <a class="btn btn-outline" href="{% url 'core:panel_products_list' %}">İptal</a>
+            <button class="btn btn-primary" type="submit">Değişiklikleri Kaydet</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

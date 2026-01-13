@@ -1,0 +1,37 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+<div class="panel-header">
+  <h1>Siparişler</h1>
+  <p class="panel-breadcrumb">Siparişler</p>
+</div>
+
+{% if orders %}
+  <div class="panel-card">
+    <div class="table">
+      <div class="table-row table-head">
+        <div>#</div>
+        <div>Müşteri</div>
+        <div>Tutar</div>
+        <div>Durum</div>
+        <div>Tarih</div>
+        <div>İşlem</div>
+      </div>
+      {% for o in orders %}
+        <div class="table-row">
+          <div>#{{ o.id }}</div>
+          <div>{{ o.user.username }}</div>
+          <div>₺{{ o.total_amount }}</div>
+          <div>{{ o.get_status_display }}</div>
+          <div>{{ o.created_at|date:"d.m.Y H:i" }}</div>
+          <div><a class="btn btn-outline" href="{% url 'core:panel_order_detail' o.id %}">Detay</a></div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% else %}
+  <div class="empty-state">
+    <h2>Henüz sipariş yok</h2>
+    <p class="muted">Sipariş oluştuğunda burada listelenir.</p>
+  </div>
+{% endif %}
+{% endblock %}

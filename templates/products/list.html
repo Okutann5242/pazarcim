@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Ürünler</h1>
+        <div class="page-actions">
+            <a href="{% url 'checkout:cart' %}" class="btn btn-outline">Sepetim</a>
+        </div>
+    </div>
+
+    <form method="get" class="filter-bar">
+        <input type="text" name="q" value="{{ q }}" placeholder="Ürün ara..." class="input" />
+
+        <select name="category" class="input">
+            <option value="">Tüm kategoriler</option>
+            {% for c in categories %}
+                <option value="{{ c.slug }}" {% if c.slug == category_slug %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+        </select>
+
+        <button class="btn btn-primary" type="submit">Filtrele</button>
+        {% if q or category_slug %}
+            <a href="{% url 'products:list' %}" class="btn btn-outline">Sıfırla</a>
+        {% endif %}
+    </form>
+
+    <div class="grid-3">
+        {% for i in items %}
+        <div class="item-card">
+            <a href="{% url 'products:detail' i.slug %}" class="item-media">
+                {% if i.image %}
+                    <img src="{{ i.image.url }}" alt="{{ i.name }}" class="item-img"/>
+                {% else %}
+                    <img src="{% static 'img/products/t.jpg' %}" alt="{{ i.name }}" class="item-img"/>
+                {% endif %}
+            </a>
+
+            <div class="item-body">
+                <p class="item-title">{{ i.name }}</p>
+                <p class="item-sub muted">{{ i.category.name }} • Puan: {{ i.average_rating }} ({{ i.review_count }})</p>
+
+                <div class="item-price-row">
+                    <span class="item-price">₺{{ i.price }}</span>
+                    {% if i.compare_at_price %}
+                        <span class="item-old">₺{{ i.compare_at_price }}</span>
+                    {% endif %}
+                </div>
+
+                <div class="card-actions">
+                    <a href="{% url 'products:detail' i.slug %}" class="btn btn-outline">Detay</a>
+
+                    {% if user.is_authenticated and i.in_stock %}
+                        <a href="{% url 'checkout:cart_add' i.id %}" class="btn btn-primary">Sepete Ekle</a>
+                    {% elif not i.in_stock %}
+                        <span class="badge badge-danger">Stok yok</span>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}?next={% url 'products:detail' i.slug %}" class="btn btn-primary">Giriş Yap</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div class="empty-state">Kriterlere uygun ürün bulunamadı.</div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

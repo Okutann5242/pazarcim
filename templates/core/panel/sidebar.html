@@ -1,0 +1,189 @@
+{% load static %}
+
+<style>
+    /* 1. Sidebar Ana Kutusu */
+    .panel-sidebar {
+        width: 260px;              /* Genişlik sabit */
+        height: 100vh;             /* Tam boy yükseklik */
+        background-color: #ffffff; /* Beyaz arka plan */
+        border-right: 1px solid #e5e7eb; /* Sağ tarafa ince çizgi */
+        display: flex;
+        flex-direction: column;
+        padding: 20px 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow-y: auto; /* İçerik taşarsa kaydırma çubuğu çıksın */
+    }
+
+    /* 2. Logo Alanı */
+    .panel-logo {
+        font-size: 24px;
+        font-weight: 800;
+        color: #4f46e5; /* Morumsu modern bir renk */
+        text-align: center;
+        margin-bottom: 30px;
+        text-decoration: none;
+        letter-spacing: -0.5px;
+    }
+
+    /* 3. Menü Linkleri Genel Yapısı */
+    .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 12px 24px;
+        color: #4b5563; /* Koyu gri yazı */
+        text-decoration: none;
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        border-left: 3px solid transparent; /* Sol kenarlık (hover için hazırlık) */
+    }
+
+    /* İkonlar */
+    .nav-icon {
+        margin-right: 12px;
+        font-size: 18px;
+        width: 24px;
+        text-align: center;
+    }
+
+    /* Üzerine gelince (Hover) */
+    .nav-item:hover {
+        background-color: #f9fafb;
+        color: #111827;
+        border-left-color: #4f46e5; /* Sol çizgiyi renklendir */
+    }
+
+    /* Aktif/Seçili Link (İsterseniz JS ile bu classı ekleyebilirsiniz) */
+    .nav-item.active-link {
+        background-color: #eff6ff;
+        color: #2563eb;
+        border-left-color: #2563eb;
+    }
+
+    /* 4. Alt Menüler (Dropdown) */
+    .nav-children {
+        display: none; /* Varsayılan olarak gizli */
+        background-color: #f9fafb; /* Hafif gri zemin */
+        padding: 5px 0;
+        flex-direction: column; /* Alt menüler alt alta olsun */
+    }
+
+    /* Alt menü linkleri */
+    .nav-child {
+        display: block;
+        padding: 10px 24px 10px 58px; /* Soldan girintili (ikon hizası) */
+        font-size: 14px;
+        color: #6b7280;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .nav-child:hover {
+        color: #4f46e5;
+        background-color: #f3f4f6;
+    }
+
+    /* JavaScript ile açıldığında bu class eklenecek */
+    .nav-children.show {
+        display: flex; /* Görünür yap */
+    }
+
+    /* Dükkan Ayarları için özel ızgara (Önceki isteğinize istinaden opsiyonel) */
+    /* Eğer alt menülerin yan yana durmasını istiyorsanız sadece bu ID'ye özel ayar: */
+    /* #dukkanMenu.show {
+        flex-direction: row;
+        flex-wrap: wrap;
+        padding-left: 20px;
+    }
+    #dukkanMenu .nav-child {
+        padding: 5px 10px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin: 2px;
+    } 
+    */
+</style>
+
+<aside class="panel-sidebar">
+
+    <a href="/" class="panel-logo">PZPazarcım</a>
+
+    <nav class="panel-nav">
+        
+        <a href="{% url 'core:dashboard' %}" class="nav-item">
+            <span class="nav-icon">🏠</span> Hesap Özeti
+        </a>
+
+        <div class="nav-group">
+            <div class="nav-item nav-parent" onclick="toggleMenu('urunMenu')">
+                <span class="nav-icon">📦</span> Ürünler
+                <span style="margin-left:auto; font-size:12px;">▼</span>
+            </div>
+            <div id="urunMenu" class="nav-children">
+                <a href="{% url 'core:panel_products_new' %}" class="nav-child">Yeni Ürün Ekle</a>
+                <a href="{% url 'core:panel_products_list' %}" class="nav-child">Ürün Listesi</a>
+            </div>
+        </div>
+
+        <a href="{% url 'core:panel_orders' %}" class="nav-item">
+            <span class="nav-icon">🧾</span> Siparişler
+        </a>
+
+        <a href="{% url 'core:panel_payouts' %}" class="nav-item">
+            <span class="nav-icon">💰</span> Tahsilatlar
+        </a>
+
+        <a href="{% url 'core:panel_refunds' %}" class="nav-item">
+            <span class="nav-icon">↩️</span> İadeler
+        </a>
+
+        <a href="{% url 'core:panel_discounts' %}" class="nav-item">
+            <span class="nav-icon">🏷️</span> İndirimler
+        </a>
+
+        <div class="nav-group">
+            <div class="nav-item nav-parent" onclick="toggleMenu('dukkanMenu')">
+                <span class="nav-icon">🏪</span> Dükkan Ayarları
+                <span style="margin-left:auto; font-size:12px;">▼</span>
+            </div>
+            <div id="dukkanMenu" class="nav-children">
+                <a href="{% url 'core:panel_store_settings' %}" class="nav-child">Genel Ayarlar</a>
+                <a href="{% url 'core:panel_store_logo' %}" class="nav-child">Logo & Banner</a>
+                <a href="{% url 'core:panel_category_settings' %}" class="nav-child">Kategoriler</a>
+                <a href="{% url 'core:panel_variation_settings' %}" class="nav-child">Varyasyonlar</a>
+                <a href="{% url 'core:panel_courier_settings' %}" class="nav-child">Kargo</a>
+            </div>
+        </div>
+
+        <div class="nav-group">
+            <div class="nav-item nav-parent" onclick="toggleMenu('hesapMenu')">
+                <span class="nav-icon">⚙️</span> Hesap Yönetimi
+                <span style="margin-left:auto; font-size:12px;">▼</span>
+            </div>
+            <div id="hesapMenu" class="nav-children">
+                <a href="{% url 'core:panel_account_security' %}" class="nav-child">Güvenlik</a>
+            </div>
+        </div>
+
+    </nav>
+</aside>
+
+<script>
+function toggleMenu(id) {
+    // Tıklanan menüyü bul
+    const menu = document.getElementById(id);
+    
+    // 'show' class'ını ekle veya çıkar (toggle)
+    menu.classList.toggle('show');
+    
+    // Opsiyonel: Bir menü açılınca diğerleri kapansın istiyorsan bu kodu açabilirsin:
+    /*
+    const allMenus = document.querySelectorAll('.nav-children');
+    allMenus.forEach(item => {
+        if(item.id !== id) item.classList.remove('show');
+    });
+    */
+}
+</script>

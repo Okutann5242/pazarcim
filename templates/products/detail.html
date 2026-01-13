@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">{{ item.name }}</h1>
+        <div class="page-actions">
+            <a href="{% url 'products:list' %}" class="btn btn-outline">Ürünlere Dön</a>
+            <a href="{% url 'checkout:cart' %}" class="btn btn-outline">Sepetim</a>
+        </div>
+    </div>
+
+    <div class="detail-card">
+        <div class="detail-media">
+            {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="detail-img" />
+            {% else %}
+                <img src="{% static 'img/products/t.jpg' %}" alt="{{ item.name }}" class="detail-img" />
+            {% endif %}
+        </div>
+
+        <div class="detail-info">
+            <div class="detail-meta">
+                <span class="pill">{{ item.category.name }}</span>
+                <span class="pill">Puan: {{ item.average_rating }} ({{ item.review_count }})</span>
+                {% if item.in_stock %}
+                    <span class="pill pill-success">Stokta</span>
+                {% else %}
+                    <span class="pill pill-danger">Stok Yok</span>
+                {% endif %}
+            </div>
+
+            {% if item.short_description %}
+                <p class="detail-desc">{{ item.short_description }}</p>
+            {% endif %}
+
+            <div class="price-row">
+                <div class="price">₺{{ item.price }}</div>
+                {% if item.compare_at_price %}
+                    <div class="price-old">₺{{ item.compare_at_price }}</div>
+                {% endif %}
+            </div>
+
+            {% if item.sku %}
+                <p class="muted">SKU: {{ item.sku }}</p>
+            {% endif %}
+
+            <div class="detail-long">
+                {{ item.description|linebreaks }}
+            </div>
+
+            <div class="card-actions" style="margin-top: 16px;">
+                {% if user.is_authenticated %}
+                    {% if item.in_stock %}
+                        <form method="post" action="{% url 'checkout:cart_add' item.id %}" style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap;">
+                        {% csrf_token %}
+                        {% if variation_types %}
+                            <div style="width:100%;"><p class="muted" style="margin:0 0 8px 0;">Varyasyon seçin:</p></div>
+                            {% for vt in variation_types %}
+                                <label style="min-width:220px;">
+                                    {{ vt.variation_type.name }}
+                                    <select class="input" name="option_ids">
+                                        {% for vo in variation_options %}
+                                            {% if vo.option.variation_type_id == vt.variation_type_id %}
+                                                <option value="{{ vo.option.id }}">{{ vo.option.name }}{% if vo.extra_price and vo.extra_price > 0 %} (+₺{{ vo.extra_price }}){% endif %}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                            {% endfor %}
+                        {% endif %}
+                        <button class="btn btn-primary" type="submit">Sepete Ekle</button>
+                    </form>
+                    {% else %}
+                        <span class="badge badge-danger">Stok yok</span>
+                    {% endif %}
+                    <a href="{% url 'checkout:cart' %}" class="btn btn-outline">Sepete Git</a>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}?next={% url 'products:detail' item.slug %}" class="btn btn-primary">Sepete eklemek için giriş yap</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-split">
+        <div class="panel">
+            <h2>Yorumlar</h2>
+
+            {% for r in reviews %}
+                <div class="review">
+                    <div class="review-head">
+                        <strong>{{ r.user.username }}</strong>
+                        <span class="muted">• {{ r.created_at|date:"d.m.Y" }} • Puan: {{ r.rating }}/5</span>
+                    </div>
+                    <div class="review-body">{{ r.comment|linebreaks }}</div>
+                </div>
+            {% empty %}
+                <p class="muted">Henüz yorum yok. İlk yorumu siz yazın.</p>
+            {% endfor %}
+        </div>
+
+        <div class="panel">
+            <h2>Yorum Yaz</h2>
+            {% if user.is_authenticated %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ review_form.non_field_errors }}
+                    <label>Puan</label>
+                    {{ review_form.rating }}
+                    <label>Yorum</label>
+                    {{ review_form.comment }}
+                    <button class="btn btn-primary" type="submit">Gönder</button>
+                </form>
+            {% else %}
+                <p class="muted">Yorum yazmak için giriş yapmalısınız.</p>
+                <a class="btn btn-outline" href="{% url 'accounts:login' %}?next={% url 'products:detail' item.slug %}">Giriş Yap</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

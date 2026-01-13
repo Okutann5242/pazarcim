@@ -1,0 +1,55 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+<div class="panel-header">
+  <h1>Sipariş #{{ order.id }}</h1>
+  <p class="panel-breadcrumb">Siparişler &gt; Detay</p>
+</div>
+
+<div class="panel-card">
+  <h2>Özet</h2>
+  <p><strong>Müşteri:</strong> {{ order.user.username }}{% if order.user.email %} ({{ order.user.email }}){% endif %}</p>
+  <p><strong>Adres:</strong> {{ order.address.full_name }} - {{ order.address.city }}/{{ order.address.district }} - {{ order.address.line1 }}</p>
+  <p><strong>Tutar:</strong> ₺{{ order.total_amount }}</p>
+
+  <form method="post" style="margin-top: 12px;">
+    {% csrf_token %}
+    <div class="panel-grid-2">
+      <div class="form-group">
+        <label>Durum</label>
+        <select name="status" class="input">
+          {% for val,label in status_choices %}
+            <option value="{{ val }}" {% if order.status == val %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group" style="display:flex; align-items:flex-end;">
+        <button class="btn btn-primary" type="submit">Güncelle</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="panel-card">
+  <h2>Kalemler</h2>
+  <div class="table">
+    <div class="table-row table-head">
+      <div>Ürün</div>
+      <div>Adet</div>
+      <div>Birim</div>
+      <div>Ara Toplam</div>
+    </div>
+    {% for it in order.items.all %}
+      <div class="table-row">
+        <div>{{ it.product.name }}</div>
+        <div>{{ it.quantity }}</div>
+        <div>₺{{ it.unit_price }}</div>
+        <div>₺{{ it.line_total }}</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="panel-actions">
+  <a class="btn btn-outline" href="{% url 'core:panel_orders' %}">Geri</a>
+</div>
+{% endblock %}

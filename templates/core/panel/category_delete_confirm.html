@@ -1,0 +1,17 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+<div class="panel-header">
+  <h1>Kategori Sil</h1>
+  <p class="panel-breadcrumb">Kategoriler &gt; Sil</p>
+</div>
+<div class="panel-card">
+  <p><strong>{{ category.name }}</strong> kategorisi silinsin mi?</p>
+  <form method="post">
+    {% csrf_token %}
+    <div class="panel-actions">
+      <a class="btn btn-outline" href="{% url 'core:panel_category_settings' %}">Vazgeç</a>
+      <button class="btn btn-primary" type="submit">Sil</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

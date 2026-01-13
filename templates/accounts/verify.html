@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h2 class="auth-title">Doğrulama</h2>
+
+    <p class="auth-small">
+      Doğrulama kodu şu adrese gönderildi: <strong>{{ email }}</strong>
+    </p>
+
+    <form method="POST">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+
+      <label>Doğrulama Kodu</label>
+      {{ form.code }}
+      {{ form.code.errors }}
+
+      <button class="auth-button" type="submit">Doğrula</button>
+
+      <p class="auth-small" style="margin-top: 12px;">
+        Kod gelmedi mi?
+        <a href="{% url 'accounts:resend_verification' %}">Yeniden Gönder</a>
+      </p>
+
+      <p class="auth-small">
+        <a href="{% url 'accounts:register' %}">Farklı e-posta ile kayıt</a>
+      </p>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

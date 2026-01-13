@@ -1,0 +1,117 @@
+{% extends "core/panel/panel_base.html" %}
+
+{% block content %}
+
+<style>
+    /* İçeriği merkeze almak ve çok yayılmasını engellemek için */
+    .settings-container {
+        max-width: 800px; /* Form genişliği */
+        margin: 0 auto;   /* Ortala */
+    }
+
+    .panel-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+
+    /* Input Tasarımı */
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 14px;
+        background-color: #f9fafb;
+        transition: all 0.2s;
+        box-sizing: border-box;
+    }
+
+    .form-control:focus {
+        border-color: #4f46e5;
+        background-color: #fff;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+    }
+
+    .form-control textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    /* Başlık */
+    .section-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 24px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Buton */
+    .btn-save {
+        background-color: #4f46e5;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background 0.2s;
+    }
+    .btn-save:hover {
+        background-color: #4338ca;
+    }
+</style>
+
+<div class="panel-header">
+    <h1>Genel Ayarlar</h1>
+    <p class="panel-breadcrumb">Dükkan Ayarları &gt; Genel Bilgiler</p>
+</div>
+
+<div class="settings-container">
+    <div class="panel-card">
+        <h2 class="section-title">Mağaza Genel Bilgileri</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Mağaza Adı</label>
+                <input type="text" class="form-control" name="store_name" value="{{ store.name }}" placeholder="Mağazanızın adı">
+            </div>
+
+            <div class="form-group">
+                <label>Kısa Açıklama</label>
+                <textarea class="form-control" name="description" placeholder="Müşterileriniz için kısa bir tanıtım yazısı...">{{ store.description }}</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Telefon Numarası</label>
+                <input type="text" class="form-control" name="phone" value="{{ store.phone }}" placeholder="İletişim numarası">
+            </div>
+
+            <div style="text-align:right; margin-top:30px;">
+                <button class="btn-save" type="submit">Değişiklikleri Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

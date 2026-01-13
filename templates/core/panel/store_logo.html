@@ -1,0 +1,40 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Logo & Banner</h1>
+    <p class="panel-breadcrumb">Dükkan Yönetimi &gt; Logo & Banner</p>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="panel-grid-2">
+      <div class="panel-card">
+          <h2>Logo</h2>
+          <p class="muted">Önerilen: kare, minimum 200x200.</p>
+          <div class="form-group">
+            {{ form.logo }}
+          </div>
+          {% if profile.logo %}
+            <p><a class="btn btn-outline" href="{{ profile.logo.url }}" target="_blank" rel="noopener">Mevcut Logoyu Aç</a></p>
+          {% endif %}
+      </div>
+
+      <div class="panel-card">
+          <h2>Banner</h2>
+          <p class="muted">Önerilen: yatay banner.</p>
+          <div class="form-group">
+            {{ form.banner }}
+          </div>
+          {% if profile.banner %}
+            <p><a class="btn btn-outline" href="{{ profile.banner.url }}" target="_blank" rel="noopener">Mevcut Bannerı Aç</a></p>
+          {% endif %}
+      </div>
+  </div>
+
+  <div class="panel-actions">
+    <button class="btn btn-primary" type="submit">Kaydet</button>
+  </div>
+</form>
+
+{% endblock %}

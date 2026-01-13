@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+
+        <h2 class="auth-title">Giriş Yap</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+            <label>Kullanıcı adı</label>
+            {{ form.username }}
+
+            <label>Şifre</label>
+            {{ form.password }}
+
+            <button class="auth-button" type="submit">Giriş Yap</button>
+
+            <p class="auth-small">
+                Hesabın yok mu?
+                <a href="{% url 'accounts:register' %}">Kayıt Ol</a>
+            </p>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

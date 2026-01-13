@@ -1,0 +1,114 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+  <div class="panel-header">
+    <h1>Satıcı Paneli</h1>
+    <p class="panel-breadcrumb">Genel Bakış</p>
+  </div>
+
+  <div class="panel-grid-3">
+    <div class="panel-card">
+      <h2>Ürün</h2>
+      <p class="big-value">{{ stats.products }}</p>
+    </div>
+    <div class="panel-card">
+      <h2>Sipariş</h2>
+      <p class="big-value">{{ stats.orders }}</p>
+    </div>
+    <div class="panel-card">
+      <h2>İade</h2>
+      <p class="big-value">{{ stats.refunds }}</p>
+    </div>
+    <div class="panel-card">
+      <h2>Ciro (30g)</h2>
+      <p class="big-value">₺{{ stats.revenue_30d }}</p>
+    </div>
+  </div>
+
+  <div class="panel-grid-2" style="margin-top:16px;">
+    <div class="panel-card">
+      <h2>Hızlı Başlangıç</h2>
+      <ul class="list-unstyled mb-0">
+        <li class="mb-2">
+          <span class="badge bg-{% if onboarding.has_store %}success{% else %}secondary{% endif %}">{% if onboarding.has_store %}Tamam{% else %}Eksik{% endif %}</span>
+          <span class="ms-2">Mağaza profili</span>
+        </li>
+        <li class="mb-2">
+          <span class="badge bg-{% if onboarding.has_logo %}success{% else %}secondary{% endif %}">{% if onboarding.has_logo %}Tamam{% else %}Eksik{% endif %}</span>
+          <span class="ms-2">Logo yükle</span>
+        </li>
+        <li class="mb-2">
+          <span class="badge bg-{% if onboarding.has_banner %}success{% else %}secondary{% endif %}">{% if onboarding.has_banner %}Tamam{% else %}Eksik{% endif %}</span>
+          <span class="ms-2">Banner yükle</span>
+        </li>
+        <li>
+          <span class="badge bg-{% if onboarding.has_product %}success{% else %}secondary{% endif %}">{% if onboarding.has_product %}Tamam{% else %}Eksik{% endif %}</span>
+          <span class="ms-2">İlk ürününü ekle</span>
+        </li>
+      </ul>
+      <div class="mt-3">
+        <a class="btn btn-sm btn-outline-primary" href="{% url 'core:panel_store_settings' %}">Mağaza Ayarları</a>
+        <a class="btn btn-sm btn-primary" href="{% url 'core:panel_products_new' %}">Ürün Ekle</a>
+      </div>
+    </div>
+    <div class="panel-card">
+      <h2>Son Siparişler</h2>
+      {% if recent_orders %}
+        <div class="table-responsive">
+          <table class="table table-sm align-middle mb-0">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Durum</th>
+                <th>Tutar</th>
+                <th>Tarih</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for o in recent_orders %}
+              <tr>
+                <td><a class="text-decoration-none" href="{% url 'core:panel_order_detail' o.id %}">{{ o.id }}</a></td>
+                <td><span class="badge bg-light text-dark">{{ o.get_status_display }}</span></td>
+                <td>₺{{ o.total_amount }}</td>
+                <td class="text-muted">{{ o.created_at|date:"d.m.Y H:i" }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="text-muted mb-0">Henüz sipariş yok.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="panel-grid-2" style="margin-top:16px;">
+    <div class="panel-card">
+      <h2>Son 30 Gün Satış</h2>
+      {{ daily_sales|json_script:"daily-sales" }}
+      <canvas id="salesChart" height="120"></canvas>
+    </div>
+    <div class="panel-card">
+      <h2>Sipariş Durumları</h2>
+      {{ status_counts|json_script:"status-counts" }}
+      <canvas id="statusChart" height="120"></canvas>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const daily = JSON.parse(document.getElementById("daily-sales").textContent);
+    new Chart(document.getElementById("salesChart"), {
+      type: "line",
+      data: { labels: daily.map(x=>x.date), datasets: [{ label: "₺ Satış", data: daily.map(x=>x.total), tension: 0.25 }] },
+      options: { responsive: true }
+    });
+
+    const sc = JSON.parse(document.getElementById("status-counts").textContent);
+    new Chart(document.getElementById("statusChart"), {
+      type: "bar",
+      data: { labels: Object.keys(sc), datasets: [{ label: "Adet", data: Object.values(sc) }] },
+      options: { responsive: true }
+    });
+  </script>
+{% endblock %}
+

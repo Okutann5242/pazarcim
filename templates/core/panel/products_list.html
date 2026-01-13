@@ -1,0 +1,59 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Satıştaki Ürünler</h1>
+    <p class="panel-breadcrumb">Ürünler &gt; Satıştaki Ürünler</p>
+</div>
+
+<div class="panel-card" style="margin-bottom:12px;">
+  <form method="get" class="form-grid" style="grid-template-columns: 2fr 1fr 1fr auto; align-items:end;">
+    <label>Arama<input class="input" type="text" name="q" value="{{ filters.q }}"></label>
+    <label>Kategori<select class="input" name="category"><option value="">Tümü</option>{% for c in categories %}<option value="{{ c.id }}" {% if filters.category == c.id|stringformat:"s" %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select></label>
+    <label>Durum<select class="input" name="active"><option value="">Tümü</option><option value="1" {% if filters.active == "1" %}selected{% endif %}>Aktif</option><option value="0" {% if filters.active == "0" %}selected{% endif %}>Pasif</option></select></label>
+    <button class="btn btn-outline" type="submit">Filtrele</button>
+  </form>
+</div>
+
+{% if products %}
+    <div class="panel-card">
+        <div class="panel-actions" style="justify-content:flex-end; margin-bottom: 12px;">
+            <a href="{% url 'core:panel_products_new' %}" class="btn btn-primary">Yeni Ürün</a>
+        </div>
+
+        <div class="table">
+            <div class="table-row table-head">
+                <div>Ürün</div>
+                <div>Kategori</div>
+                <div>Fiyat</div>
+                <div>Durum</div>
+                <div>İşlemler</div>
+            </div>
+            {% for p in products %}
+                <div class="table-row">
+                    <div>{{ p.name }}</div>
+                    <div>{% if p.category %}{{ p.category.name }}{% else %}-{% endif %}</div>
+                    <div>₺{{ p.price }}</div>
+                    <div>{% if p.is_active %}Aktif{% else %}Pasif{% endif %}</div>
+                    <div>
+                        <a class="btn btn-outline" href="{% url 'core:panel_products_edit' p.id %}">Düzenle</a>
+                        <a class="btn btn-outline" href="{% url 'core:panel_products_delete' p.id %}">Sil</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <div class="empty-state">
+        <h2>Henüz ürün yok</h2>
+        <p class="muted">
+            Bu ekran, ürünlerinizi görüntülediğiniz ve yönettiğiniz bölüm.
+            İlk ürününüzü ekleyerek başlayabilirsiniz.
+        </p>
+        <a href="{% url 'core:panel_products_new' %}" class="btn btn-primary">
+            Hemen ürün ekle
+        </a>
+    </div>
+{% endif %}
+
+{% endblock %}

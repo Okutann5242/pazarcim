@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* GENEL AYARLAR */
+    :root {
+        --primary-color: #8b5cf6; 
+        --primary-dark: #7c3aed;
+        --text-dark: #111111;
+    }
+
+    /* BUTONLARI ZORLA SİYAH YAPMA */
+    .hero-buttons a.btn-shopier, 
+    .hero-buttons a.btn-shopier-outline {
+        background-color: #8b5cf6 !important; /* Arkaplan Mor */
+        color: #000000 !important; /* YAZI RENGİ SİYAH */
+        padding: 16px 32px;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: 800 !important; /* Daha kalın ve belirgin */
+        text-decoration: none !important;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 170px;
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        border: none !important;
+    }
+
+    .hero-buttons a:hover {
+        background-color: #7c3aed !important;
+        transform: translateY(-2px);
+        color: #000000 !important;
+    }
+
+    /* İSTATİSTİKLER (3+, 2+ vs) -> MOR */
+    .stat-item h3 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #8b5cf6 !important; 
+        margin: 0;
+    }
+
+    /* VİTRİN FİYATLARI -> SİYAH */
+    .product-price {
+        color: #000000 !important;
+        font-weight: 800 !important;
+        font-size: 18px;
+    }
+
+    /* ÜRÜN İNCELE OKU VE ALTTAKİ LİNKLER -> MOR */
+    .section-shopier a {
+        color: #8b5cf6 !important;
+    }
+
+    /* ÜSTTEKİ BADGE SİYAH */
+    .hero-badge {
+        display: inline-block;
+        background-color: #f3f4f6;
+        color: #000000 !important;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 6px 16px;
+        border-radius: 50px;
+        margin-bottom: 24px;
+    }
+
+    .hero-title span {
+        color: #8b5cf6 !important; /* eğitimle büyü -> MOR */
+    }
+
+    /* Responsive ayarı */
+    @media (max-width: 768px) {
+        .hero-buttons { flex-direction: column; gap: 10px; }
+    }
+</style>
+
+<section class="hero-section" style="padding: 80px 0; background: linear-gradient(180deg, #fff 0%, #f9f5ff 100%);">
+    <div class="container-custom" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;" class="hero-grid">
+            <div class="hero-content">
+                <span class="hero-badge">🚀 Satıcılar için Eğitim Platformu</span>
+                <h1 style="font-size: 48px; font-weight: 800; color: #111; line-height: 1.1;">
+                    Tek linkle satış yap,<br>
+                    <span>eğitimle büyü.</span>
+                </h1>
+                <p style="font-size: 18px; color: #6b7280; margin: 25px 0 35px 0;">
+                    Pazarcım ile ürün listeleme, ödeme alma ve kargo süreçlerini tek panelden yönetin. 
+                </p>
+                <div class="hero-buttons">
+                    <a href="{% url 'education:training_list' %}" class="btn-shopier">Ücretsiz Başla</a>
+                    <a href="{% url 'core:dashboard' %}" class="btn-shopier-outline">Panel Girişi</a>
+                </div>
+            </div>
+
+            <div class="hero-image-wrapper">
+                <div style="background: #fff; border-radius: 20px; box-shadow: 0 20px 80px rgba(0,0,0,0.1); min-height: 400px; display: flex; align-items: center; justify-content: center; border: 1px solid #eee;">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" alt="Dashboard" style="width: 150px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="stats-bar" style="padding: 40px 0; border-bottom: 1px solid #f3f4f6;">
+    <div class="container-custom">
+        <div style="display: flex; justify-content: space-around; text-align: center; flex-wrap: wrap;">
+            <div class="stat-item">
+                <h3>{{ stats.active_sellers|default:"3" }}+</h3>
+                <p>Aktif Satıcı</p>
+            </div>
+            <div class="stat-item">
+                <h3>{{ stats.active_products|default:"2" }}+</h3>
+                <p>Listelenen Ürün</p>
+            </div>
+            <div class="stat-item">
+                <h3>{{ stats.total_orders|default:"1" }}+</h3>
+                <p>Tamamlanan Sipariş</p>
+            </div>
+            <div class="stat-item">
+                <h3>%0</h3>
+                <p>Başlangıç Maliyeti</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="section-shopier" style="padding: 80px 0; background: #f9fafb;">
+    <div class="container-custom">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h2 style="font-size: 32px; font-weight: 700;">Vitrin</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;">
+            {% for item in popular_products %}
+            <div style="background: #fff; border-radius: 16px; border: 1px solid #f3f4f6; overflow: hidden;">
+                <div style="height: 250px; background: #f9fafb; display: flex; align-items: center; justify-content: center;">
+                    {% if item.image %}
+                        <img src="{{ item.image.url }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% endif %}
+                </div>
+                <div style="padding: 20px;">
+                    <p style="font-weight: 600; color: #111;">{{ item.name }}</p>
+                    <p class="product-price">₺{{ item.price }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}

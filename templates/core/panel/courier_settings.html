@@ -1,0 +1,56 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+    <h1>Kargo Ayarları</h1>
+    <p class="panel-breadcrumb">Dükkan Yönetimi &gt; Kargo</p>
+</div>
+
+<div class="panel-card">
+  <h2>Yeni Kargo Yöntemi</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="panel-grid-2">
+      <div class="form-group">
+        <label>Ad</label>
+        {{ form.name }}
+        {{ form.name.errors }}
+      </div>
+      <div class="form-group">
+        <label>Sabit Ücret (TL)</label>
+        {{ form.flat_fee }}
+      </div>
+    </div>
+    <div class="form-group mt-24">
+      <label>Aktif mi?</label>
+      {{ form.is_active }}
+    </div>
+    <div class="panel-actions">
+      <button class="btn btn-primary" type="submit">Ekle</button>
+    </div>
+  </form>
+</div>
+
+{% if methods %}
+  <div class="panel-card">
+    <h2>Yöntemler</h2>
+    <div class="table">
+      <div class="table-row table-head">
+        <div>Ad</div>
+        <div>Ücret</div>
+        <div>Durum</div>
+        <div>İşlem</div>
+      </div>
+      {% for m in methods %}
+        <div class="table-row">
+          <div>{{ m.name }}</div>
+          <div>₺{{ m.flat_fee }}</div>
+          <div>{% if m.is_active %}Aktif{% else %}Pasif{% endif %}</div>
+          <div><a class="btn btn-outline" href="{% url 'core:panel_courier_delete' m.id %}">Sil</a></div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+{% endblock %}

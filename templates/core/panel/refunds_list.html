@@ -1,0 +1,158 @@
+{% extends "core/panel/panel_base.html" %}
+
+{% block content %}
+
+<style>
+    /* Tablo ve Kart Stilleri */
+    .panel-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        overflow: hidden; /* Tablo köşeleri taşmasın */
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    /* Başlık ve Butonu Yan Yana Getirme */
+    .header-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+    }
+
+    /* Tablo Tasarımı */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .data-table th {
+        background-color: #f9fafb;
+        padding: 12px 24px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #374151;
+        border-bottom: 1px solid #e5e7eb;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .data-table td {
+        padding: 16px 24px;
+        border-bottom: 1px solid #e5e7eb;
+        color: #111827;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+
+    .data-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .data-table tr:hover {
+        background-color: #f9fafb;
+    }
+
+    /* Durum Rozetleri (Badge) */
+    .badge {
+        display: inline-flex;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1;
+    }
+    .badge-gray { background-color: #f3f4f6; color: #374151; }   /* Beklemede */
+    .badge-green { background-color: #d1fae5; color: #065f46; }  /* Onaylandı */
+    .badge-red { background-color: #fee2e2; color: #b91c1c; }    /* Reddedildi */
+
+    /* Boş Durum Tasarımı */
+    .empty-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        text-align: center;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+    }
+    .empty-icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+        opacity: 0.8;
+    }
+</style>
+
+<div class="header-flex">
+    <div class="panel-header" style="margin-bottom:0;"> <h1>İadeler</h1>
+        <p class="panel-breadcrumb">Panel &gt; İade Yönetimi</p>
+    </div>
+    
+    <a class="btn btn-primary" href="{% url 'core:panel_refund_create' %}">
+        + Yeni İade Talebi
+    </a>
+</div>
+
+{% if refunds %}
+    <div class="panel-card">
+        <div class="table-responsive">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Sipariş No</th>
+                        <th>Müşteri E-posta</th>
+                        <th>Durum</th>
+                        <th>Tarih</th>
+                        <th style="text-align:right;">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in refunds %}
+                    <tr>
+                        <td style="font-weight:500;">#{{ r.order_id }}</td>
+                        <td>{{ r.customer_email|default:"<span style='color:#9ca3af'>Belirtilmemiş</span>" }}</td>
+                        <td>
+                            {% if r.status == 'approved' or r.status == 'completed' %}
+                                <span class="badge badge-green">{{ r.get_status_display }}</span>
+                            {% elif r.status == 'rejected' or r.status == 'cancelled' %}
+                                <span class="badge badge-red">{{ r.get_status_display }}</span>
+                            {% else %}
+                                <span class="badge badge-gray">{{ r.get_status_display }}</span>
+                            {% endif %}
+                        </td>
+                        <td style="color:#6b7280;">{{ r.created_at|date:"d.m.Y H:i" }}</td>
+                        <td style="text-align:right;">
+                            <a href="#" style="color:#4f46e5; font-weight:500; text-decoration:none; font-size:13px;">Detay &rarr;</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% else %}
+    
+    <div class="empty-container">
+        <div class="empty-icon">🎉</div>
+        <h2 style="font-size:20px; font-weight:600; color:#111827; margin-bottom:10px;">Şu an hiç iade talebi yok!</h2>
+        <p style="color:#6b7280; max-width:400px; line-height:1.5;">
+            Bu harika bir haber. Müşterilerinizden talep geldiğinde burada listelenecek.
+            Gerekirse manuel olarak ekleyebilirsiniz.
+        </p>
+        <a class="btn btn-outline" href="{% url 'core:panel_refund_create' %}" style="margin-top:20px;">
+            Manuel İade Oluştur
+        </a>
+    </div>
+
+{% endif %}
+
+{% endblock %}

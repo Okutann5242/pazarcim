@@ -1,0 +1,246 @@
+{% extends "core/panel/panel_base.html" %}
+
+{% block content %}
+
+<style>
+    /* Kart ve Genel Düzen */
+    .panel-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #f3f4f6;
+        padding-bottom: 10px;
+    }
+
+    /* Form Grid Yapısı */
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    /* Input Stilleri */
+    .form-group label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 6px;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="number"],
+    .form-group input[type="datetime-local"], 
+    .form-group input[type="date"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        background-color: #f9fafb;
+        box-sizing: border-box;
+    }
+
+    .form-group input:focus {
+        border-color: #4f46e5;
+        background-color: #fff;
+        outline: none;
+    }
+
+    /* Checkbox Özelleştirme */
+    .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 24px; /* Grid ile hizalamak için biraz boşluk */
+        padding: 10px;
+        background-color: #f9fafb;
+        border-radius: 6px;
+        border: 1px solid #e5e7eb;
+    }
+    .checkbox-wrapper input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: #4f46e5;
+        cursor: pointer;
+    }
+
+    /* Tablo Stilleri */
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+    .data-table th {
+        background-color: #f9fafb;
+        padding: 12px 16px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #6b7280;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .data-table td {
+        padding: 14px 16px;
+        border-bottom: 1px solid #e5e7eb;
+        color: #111827;
+        font-size: 14px;
+        vertical-align: middle;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+
+    /* Rozetler (Badge) */
+    .badge {
+        display: inline-flex;
+        padding: 4px 10px;
+        border-radius: 99px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    .badge-green { background-color: #dcfce7; color: #166534; }
+    .badge-gray { background-color: #f3f4f6; color: #374151; }
+
+    /* Butonlar */
+    .btn {
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        font-size: 14px;
+        text-decoration: none;
+    }
+    .btn-primary { background-color: #4f46e5; color: white; }
+    .btn-primary:hover { background-color: #4338ca; }
+    
+    .btn-danger-outline { 
+        background-color: white; 
+        border: 1px solid #fee2e2; 
+        color: #ef4444; 
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+    .btn-danger-outline:hover { background-color: #fef2f2; border-color: #ef4444; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .form-grid { grid-template-columns: 1fr; }
+    }
+</style>
+
+<div class="panel-header">
+    <h1>İndirim Kuponları</h1>
+    <p class="panel-breadcrumb">Panel &gt; İndirim Yönetimi</p>
+</div>
+
+<div class="panel-card">
+    <h2 class="card-title">✨ Yeni Kupon Oluştur</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Kupon Kodu (Örn: YAZ2025)</label>
+                {{ form.code }}
+                <div style="color:red; font-size:12px; margin-top:4px;">{{ form.code.errors }}</div>
+            </div>
+            
+            <div class="form-group">
+                <label>İndirim Oranı (%)</label>
+                {{ form.percent }}
+                <div style="color:red; font-size:12px; margin-top:4px;">{{ form.percent.errors }}</div>
+            </div>
+        </div>
+
+        <div class="form-grid" style="margin-top:20px;">
+            <div class="form-group">
+                <label>Başlangıç Tarihi (Opsiyonel)</label>
+                {{ form.starts_at }}
+                <small style="color:#9ca3af; font-size:11px;">Boş bırakılırsa hemen başlar.</small>
+            </div>
+            
+            <div class="form-group">
+                <label>Bitiş Tarihi (Opsiyonel)</label>
+                {{ form.ends_at }}
+                <small style="color:#9ca3af; font-size:11px;">Boş bırakılırsa süresiz olur.</small>
+            </div>
+        </div>
+
+        <div class="checkbox-wrapper">
+            {{ form.is_active }}
+            <label for="{{ form.is_active.id_for_label }}" style="margin:0; font-weight:500; cursor:pointer;">
+                Bu kupon kullanıma açık olsun (Aktif)
+            </label>
+        </div>
+
+        <div class="panel-actions" style="margin-top:24px; text-align:right;">
+            <button class="btn btn-primary" type="submit">Kuponu Kaydet</button>
+        </div>
+    </form>
+</div>
+
+<div class="panel-card">
+    <h2 class="card-title">📋 Mevcut İndirimler</h2>
+    
+    {% if discounts %}
+        <div style="overflow-x:auto;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Kupon Kodu</th>
+                        <th>İndirim</th>
+                        <th>Geçerlilik</th>
+                        <th>Durum</th>
+                        <th style="text-align:right;">İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in discounts %}
+                    <tr>
+                        <td style="font-weight:600; color:#4f46e5;">{{ d.code }}</td>
+                        <td>%{{ d.percent }}</td>
+                        <td>
+                            {% if d.ends_at %}
+                                {{ d.ends_at|date:"d M Y" }}'e kadar
+                            {% else %}
+                                <span style="color:#16a34a;">Süresiz</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if d.is_active %}
+                                <span class="badge badge-green">Aktif</span>
+                            {% else %}
+                                <span class="badge badge-gray">Pasif</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align:right;">
+                            <a href="{% url 'core:panel_discount_delete' d.id %}" 
+                               class="btn btn-danger-outline"
+                               onclick="return confirm('Bu kuponu silmek istediğinize emin misiniz?');">
+                               🗑️ Sil
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align:center; padding:40px; color:#6b7280;">
+            <div style="font-size:32px; margin-bottom:10px;">🏷️</div>
+            <p>Henüz tanımlı bir indirim kuponu yok.</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

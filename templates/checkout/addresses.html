@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Adreslerim{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1>Adreslerim</h1>
+    <a class="btn btn-primary" href="{% url 'checkout:address_new' %}">Yeni Adres</a>
+  </div>
+
+  {% if addresses %}
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+      {% for a in addresses %}
+        <div class="card"><div class="card-body">
+          <h3 style="margin:0 0 6px 0;">{{ a.full_name }}</h3>
+          <p style="margin:0 0 8px 0; opacity:.85;">{{ a.city }}/{{ a.district }}</p>
+          <p style="margin:0 0 12px 0; opacity:.85;">{{ a.line1 }}{% if a.line2 %}<br>{{ a.line2 }}{% endif %}</p>
+          <div style="display:flex; gap:8px;">
+            <a class="btn btn-outline" href="{% url 'checkout:address_edit' a.id %}">Düzenle</a>
+            <a class="btn btn-outline" href="{% url 'checkout:address_delete' a.id %}">Sil</a>
+          </div>
+        </div></div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="card"><div class="card-body">Henüz adres eklenmemiş.</div></div>
+  {% endif %}
+</div>
+{% endblock %}

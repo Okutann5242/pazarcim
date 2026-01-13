@@ -1,0 +1,30 @@
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a href="{% url 'core:home' %}" class="brand">
+            <span class="brand-logo">PZ</span>
+            <span class="brand-text">Pazarcim</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="{% url 'core:home' %}">Anasayfa</a></li>
+            <li><a href="{% url 'education:training_list' %}">Eğitimler</a></li>
+            <li><a href="{% url 'products:list' %}">Ürünler</a></li>
+            <li><a href="{% url 'checkout:cart' %}">Sepet</a></li>
+            {% if user.is_authenticated and user.is_staff or user.profile.role == 'seller' %}
+
+                <li><a href="{% url 'core:dashboard' %}">Satıcı Paneli</a></li>
+            {% endif %}
+        </ul>
+
+        <div class="nav-actions">
+            {% if user.is_authenticated %}
+                <a href="{% url 'accounts:dashboard' %}" class="btn btn-outline">Profil</a>
+                <a href="{% url 'checkout:my_orders' %}" class="btn btn-outline">Siparişlerim</a>
+                <a href="{% url 'accounts:logout' %}" class="btn btn-primary">Çıkış</a>
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="btn btn-outline">Giriş Yap</a>
+                <a href="{% url 'accounts:register' %}" class="btn btn-primary">Kayıt Ol</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>

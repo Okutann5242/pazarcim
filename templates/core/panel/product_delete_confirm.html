@@ -1,0 +1,20 @@
+{% extends "core/panel/panel_base.html" %}
+{% block content %}
+
+<div class="panel-header">
+  <h1>Ürün Sil</h1>
+  <p class="panel-breadcrumb">Ürünler &gt; Sil</p>
+</div>
+
+<div class="panel-card">
+  <p><strong>{{ product.name }}</strong> ürünü silinsin mi? Bu işlem geri alınamaz.</p>
+  <form method="post">
+    {% csrf_token %}
+    <div class="panel-actions">
+      <a class="btn btn-outline" href="{% url 'core:panel_products_list' %}">Vazgeç</a>
+      <button class="btn btn-primary" type="submit">Sil</button>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
